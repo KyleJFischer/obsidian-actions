@@ -1,0 +1,17 @@
+name: 'Jenny'
+description: 'Run scripts based on note changes and filters'
+inputs:
+  jenny_dir:
+    description: 'Directory containing .jenny filter configurations'
+    required: false
+    default: '.jenny'
+runs:
+  using: 'composite'
+  steps:
+    - name: Run Jenny runner
+      shell: bash
+      run: |
+        ${{ github.action_path }}/entrypoint.sh "${{ inputs.jenny_dir }}"
+branding:
+  icon: 'file-text'
+  color: 'blue'

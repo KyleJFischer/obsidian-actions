@@ -1,0 +1,30 @@
+name: Jenny Note Filtering
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  jenny:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history needed for git diff
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r action/requirements.txt
+
+      - name: Run Jenny
+        uses: ./
+        with:
+          jenny_dir: '.jenny'

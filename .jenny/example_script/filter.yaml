@@ -1,0 +1,16 @@
+name: Example Script Filter
+description: Example filter that matches notes with the "example" tag
+enabled: true
+
+filters:
+  - type: tag
+    params:
+      has_any:
+        - example
+  - type: change_type
+    params:
+      types:
+        - added
+        - modified
+
+script: "./script.sh"
