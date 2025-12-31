@@ -13,4 +13,4 @@ filters:
         - added
         - modified
 
-script: "./script.sh"
+script: "python3 script.py"

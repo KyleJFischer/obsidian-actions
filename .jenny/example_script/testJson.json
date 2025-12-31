@@ -1,0 +1,24 @@
+{
+    "title": "Description",
+    "path": "notes/work-item-note.md",
+    "content": "---\ntags:\n  - Client\n  - WorkItem\n  - example\n  - BobBuildIt\nstatus: Triage\n---\n# Description\n\n# Useful Links\n\n\n# Tasks\n- [ ] Complete This Work Item  #task",
+    "tags": [
+        "BobBuildIt",
+        "Client",
+        "WorkItem",
+        "example",
+        "task"
+    ],
+    "properties": {
+        "tags": [
+            "Client",
+            "WorkItem",
+            "example",
+            "BobBuildIt"
+        ],
+        "status": "Triage"
+    },
+    "change_type": "modified",
+    "commit_sha": "f36927bb3daf26a9371664f4dd6f2d6321e039ca",
+    "commit_message": "Modified script with changes"
+}
