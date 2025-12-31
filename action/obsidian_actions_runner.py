@@ -397,7 +397,27 @@ class FilterConfig:
     def get_script_path(self) -> Path:
         """Get the script path relative to the filter directory"""
         script = self.config.get('script', './script.sh')
+        # If script is a command like "python3 script.py", extract the file part
+        if ' ' in script and not script.startswith('./'):
+            parts = script.split()
+            if parts[0] in ['python', 'python3', 'python2']:
+                script = parts[1]
         return self.script_dir / script
+    
+    def get_script_command(self) -> Optional[List[str]]:
+        """Get the script command as a list (for subprocess execution).
+        Returns None if script is just a file path, or a list like ['python3', 'script.py'] if it's a command."""
+        script = self.config.get('script', './script.sh')
+        # If script contains spaces and doesn't start with ./, it might be a command
+        if ' ' in script and not script.startswith('./'):
+            # Split into command parts
+            parts = script.split()
+            # If first part is python/python3, treat as command
+            if parts[0] in ['python', 'python3', 'python2']:
+                # Resolve the script file path
+                script_file = self.script_dir / parts[1]
+                return [parts[0], str(script_file)]
+        return None
 
 
 def load_filter_configs(jenny_dir: Path) -> List[FilterConfig]:
@@ -451,24 +471,47 @@ def note_to_dict(note: Note) -> Dict[str, Any]:
     }
 
 
-def execute_script(script_path: Path, json_file: Path) -> bool:
+def execute_script(script_path: Path, json_file: Path, script_command: Optional[List[str]] = None) -> bool:
     """Execute a script with the JSON file path as argument"""
-    if not script_path.exists():
-        logger.error(f"Script not found: {script_path}")
-        return False
-
-    if not script_path.is_file():
-        logger.error(f"Script path is not a file: {script_path}")
-        return False
-
-    # Make script executable
-    script_path.chmod(0o755)
-
     import subprocess
+    
+    # Determine how to execute the script
+    if script_command:
+        # Use provided command (e.g., ['python3', 'script.py'])
+        if not script_path.exists():
+            logger.error(f"Script not found: {script_path}")
+            return False
+        cmd = script_command + [str(json_file)]
+        cwd = script_path.parent
+        logger.info(f"Executing command: {' '.join(cmd)}")
+    elif script_path.suffix == '.py':
+        # Python script - run with python3
+        if not script_path.exists():
+            logger.error(f"Script not found: {script_path}")
+            return False
+        cmd = ['python3', str(script_path), str(json_file)]
+        cwd = script_path.parent
+        logger.info(f"Executing Python script: {' '.join(cmd)}")
+    else:
+        # Shell script or other executable
+        if not script_path.exists():
+            logger.error(f"Script not found: {script_path}")
+            return False
+
+        if not script_path.is_file():
+            logger.error(f"Script path is not a file: {script_path}")
+            return False
+
+        # Make script executable
+        script_path.chmod(0o755)
+        cmd = [str(script_path), str(json_file)]
+        cwd = script_path.parent
+        logger.info(f"Executing script: {' '.join(cmd)}")
+
     try:
         result = subprocess.run(
-            [str(script_path), str(json_file)],
-            cwd=script_path.parent,
+            cmd,
+            cwd=cwd,
             capture_output=True,
             text=True,
             check=True
@@ -593,8 +636,9 @@ def main():
                 try:
                     # Execute script
                     script_path = filter_config.get_script_path()
+                    script_command = filter_config.get_script_command()
                     logger.info(f"Executing script: {script_path}")
-                    if execute_script(script_path, json_file):
+                    if execute_script(script_path, json_file, script_command):
                         total_executions += 1
                     else:
                         logger.error(f"Script execution failed: {script_path}")

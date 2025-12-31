@@ -4,6 +4,7 @@ status: published
 tags:
   - example
   - test
+  - buildit
 date: 2024-01-15
 author: Obsidian Actions
 ---

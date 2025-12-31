@@ -8,10 +8,14 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Install Python dependencies
+      shell: bash
+      run: |
+        pip3 install -r ${{ github.action_path }}/requirements.txt
     - name: Run Obsidian Actions runner
       shell: bash
       run: |
-        ${{ github.action_path }}/entrypoint.sh "${{ inputs.jenny_dir }}"
+        ${{ github.action_path }}/entrypoint.sh "${{ inputs.obsidian_actions_dir }}"
 branding:
   icon: 'file-text'
   color: 'blue'
