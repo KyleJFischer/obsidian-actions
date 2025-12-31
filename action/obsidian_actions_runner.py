@@ -9,6 +9,7 @@ import re
 import sys
 import tempfile
 from dataclasses import dataclass, field
+from datetime import date, datetime
 from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
@@ -411,6 +412,20 @@ def load_filter_configs(jenny_dir: Path) -> List[FilterConfig]:
     return configs
 
 
+def make_json_serializable(obj: Any) -> Any:
+    """Recursively convert date/datetime objects to strings for JSON serialization"""
+    if isinstance(obj, (date, datetime)):
+        return obj.isoformat()
+    elif isinstance(obj, dict):
+        return {key: make_json_serializable(value) for key, value in obj.items()}
+    elif isinstance(obj, list):
+        return [make_json_serializable(item) for item in obj]
+    elif isinstance(obj, tuple):
+        return tuple(make_json_serializable(item) for item in obj)
+    else:
+        return obj
+
+
 def note_to_dict(note: Note) -> Dict[str, Any]:
     """Convert Note to dictionary for JSON serialization"""
     return {
@@ -418,7 +433,7 @@ def note_to_dict(note: Note) -> Dict[str, Any]:
         'path': str(note.path),
         'content': note.content,
         'tags': note.tags,
-        'properties': note.properties,
+        'properties': make_json_serializable(note.properties),
         'change_type': note.change_type.value,
         'commit_sha': note.commit_sha,
         'commit_message': note.commit_message
