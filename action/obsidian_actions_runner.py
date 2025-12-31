@@ -73,13 +73,17 @@ class MarkdownParser:
 
         # Extract tags
         tags = self._extract_tags(post.content, fm_data)
+        tags_list = sorted(list(tags))
+        logger.info(f"Extracted {len(tags_list)} tags from {file_path}: {tags_list}")
+        if 'tags' in fm_data:
+            logger.info(f"Frontmatter tags value: {fm_data['tags']} (type: {type(fm_data['tags'])})")
 
         # Extract title
         title = self._extract_title(post.content, fm_data, file_path)
 
         return {
             'title': title,
-            'tags': sorted(list(tags)),
+            'tags': tags_list,
             'properties': fm_data,
             'content': content
         }
@@ -93,8 +97,13 @@ class MarkdownParser:
             fm_tags = frontmatter['tags']
             if isinstance(fm_tags, str):
                 tags.add(fm_tags.strip())
-            elif isinstance(fm_tags, list):
-                tags.update(t.strip() for t in fm_tags)
+            elif isinstance(fm_tags, (list, tuple)):
+                # Handle both lists and tuples
+                for t in fm_tags:
+                    if t is not None:
+                        tag_str = str(t).strip()
+                        if tag_str:
+                            tags.add(tag_str)
 
         # Inline tags
         inline_tags = self.INLINE_TAG_PATTERN.findall(content)
@@ -428,11 +437,13 @@ def make_json_serializable(obj: Any) -> Any:
 
 def note_to_dict(note: Note) -> Dict[str, Any]:
     """Convert Note to dictionary for JSON serialization"""
+    # Ensure tags is a list of strings
+    tags_list = [str(tag) for tag in note.tags] if note.tags else []
     return {
         'title': note.title,
         'path': str(note.path),
         'content': note.content,
-        'tags': note.tags,
+        'tags': tags_list,
         'properties': make_json_serializable(note.properties),
         'change_type': note.change_type.value,
         'commit_sha': note.commit_sha,
@@ -572,8 +583,11 @@ def main():
                 logger.info(f"Note matched: {note.path}")
 
                 # Write note to JSON file
+                note_dict = note_to_dict(note)
+                logger.info(f"Note tags before serialization: {note.tags} (type: {type(note.tags)})")
+                logger.info(f"Note dict tags: {note_dict.get('tags')} (type: {type(note_dict.get('tags'))})")
                 with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
-                    json.dump(note_to_dict(note), f, indent=2)
+                    json.dump(note_dict, f, indent=2)
                     json_file = Path(f.name)
 
                 try:
