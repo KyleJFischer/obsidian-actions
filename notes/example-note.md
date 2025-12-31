@@ -17,4 +17,3 @@ It also has some inline #tags in the content.
 ## Content Section
 
 This note contains various markdown elements for testing purposes.
-

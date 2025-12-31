@@ -22,4 +22,3 @@ This is a longer article with multiple sections.
 ### Subsection
 
 More content here with #inline-tags.
-

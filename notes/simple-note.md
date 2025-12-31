@@ -7,4 +7,3 @@ It has an inline #example tag, so it should still match filters that look for th
 ## Section
 
 Some content here.
-

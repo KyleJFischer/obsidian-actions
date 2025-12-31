@@ -11,4 +11,3 @@ This directory contains example markdown notes for testing the Jenny GitHub Acti
 - `simple-note.md` - No frontmatter, but has inline `#example` tag
 
 These notes can be used to test various filter configurations and script executions.
-
