@@ -460,7 +460,7 @@ def execute_script(script_path: Path, json_file: Path) -> bool:
 def main():
     """Main entry point"""
     if len(sys.argv) < 2:
-        logger.error("Usage: jenny_runner.py <jenny_dir>")
+        logger.error("Usage: obsidian_actions_runner.py <jenny_dir>")
         sys.exit(1)
 
     jenny_dir = Path(sys.argv[1]).resolve()

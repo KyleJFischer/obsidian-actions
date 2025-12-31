@@ -1,6 +1,6 @@
 # Example Notes
 
-This directory contains example markdown notes for testing the Jenny GitHub Action.
+This directory contains example markdown notes for testing the Obsidian Actions GitHub Action.
 
 ## Test Notes
 

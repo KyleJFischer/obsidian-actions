@@ -5,7 +5,7 @@ tags:
   - example
   - test
 date: 2024-01-15
-author: Jenny
+author: Obsidian Actions
 ---
 
 # Example Note

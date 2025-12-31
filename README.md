@@ -1,6 +1,6 @@
-# Jenny
+# Obsidian Actions
 
-A GitHub Action that runs scripts based on note changes and filters. Jenny detects changed markdown files in git pushes, parses them into a structured format, and executes scripts when notes match filter criteria.
+A GitHub Action that runs scripts based on note changes and filters. Obsidian Actions detects changed markdown files in git pushes, parses them into a structured format, and executes scripts when notes match filter criteria.
 
 ## Features
 
@@ -12,7 +12,7 @@ A GitHub Action that runs scripts based on note changes and filters. Jenny detec
 
 ## How It Works
 
-1. **Git Push Event**: Jenny triggers on git push events
+1. **Git Push Event**: Obsidian Actions triggers on git push events
 2. **Change Detection**: Detects all changed markdown files (`.md`, `.markdown`)
 3. **Note Parsing**: Parses each changed file to extract:
    - `title`: From frontmatter `title` field or first H1 heading
@@ -27,7 +27,7 @@ A GitHub Action that runs scripts based on note changes and filters. Jenny detec
 
 ### As a GitHub Action
 
-Add Jenny to your notes repository's workflow:
+Add Obsidian Actions to your notes repository's workflow:
 
 ```yaml
 name: Process Notes
@@ -38,14 +38,14 @@ on:
       - main
 
 jobs:
-  jenny:
+  obsidian-actions:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: your-org/jenny@main
+      - uses: your-org/Obsidian-actions@main
         with:
           jenny_dir: '.jenny'
 ```
@@ -59,7 +59,7 @@ jobs:
    ```
 3. Run the runner:
    ```bash
-   python action/jenny_runner.py .jenny
+   python action/obsidian_actions_runner.py .jenny
    ```
 
 ## Configuration
@@ -249,7 +249,7 @@ print(f"Tags: {', '.join(note['tags'])}")
 
 ## Note Format
 
-Jenny expects markdown files with optional YAML frontmatter:
+Obsidian Actions expects markdown files with optional YAML frontmatter:
 
 ```markdown
 ---
@@ -273,7 +273,7 @@ This is the content of my note. I can also use inline #tags here.
 
 ## Environment Variables
 
-Jenny uses the following GitHub Actions environment variables:
+Obsidian Actions uses the following GitHub Actions environment variables:
 
 - `GITHUB_SHA`: The commit SHA that triggered the workflow
 - `GITHUB_BEFORE`: The commit SHA before the push (for detecting changes)

@@ -7,4 +7,4 @@ JENNY_DIR="${1:-.jenny}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # Run the Python runner
-python3 "${SCRIPT_DIR}/jenny_runner.py" "${JENNY_DIR}"
+python3 "${SCRIPT_DIR}/obsidian_actions_runner.py" "${JENNY_DIR}"
