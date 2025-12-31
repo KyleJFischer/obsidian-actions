@@ -25,6 +25,6 @@ jobs:
           pip install -r action/requirements.txt
 
       - name: Run Obsidian Actions
-        uses: ./
+        uses: ./action/
         with:
-          jenny_dir: '.jenny'
+          obsidian_actions_dir: '.jenny'

@@ -1,7 +1,7 @@
 name: 'Obsidian Actions'
 description: 'Run scripts based on note changes and filters'
 inputs:
-  jenny_dir:
+  obsidian_actions_dir:
     description: 'Directory containing .jenny filter configurations'
     required: false
     default: '.jenny'
