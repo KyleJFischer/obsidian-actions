@@ -36,6 +36,7 @@ on:
   push:
     branches:
       - main
+      - master
 
 jobs:
   obsidian-actions:
@@ -45,10 +46,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: your-org/Obsidian-actions@main
+      - uses: your-org/Obsidian-actions@master
         with:
-          jenny_dir: '.jenny'
+          obsidian_actions_dir: '.jenny'
 ```
+
+**Note:** Replace `your-org` with your GitHub username or organization name. Make sure you have a `.jenny` directory in your notes repository root with your filter configurations (see [Configuration](#configuration) below).
 
 ### Local Development
 
