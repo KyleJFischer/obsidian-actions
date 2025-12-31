@@ -9,6 +9,9 @@ if [ -z "$JSON_FILE" ]; then
 fi
 
 echo "Processing note from: $JSON_FILE"
+echo "JSON file: $JSON_FILE"
+
+cat "$JSON_FILE"
 
 # Read and display note information
 TITLE=$(jq -r '.title' "$JSON_FILE")
