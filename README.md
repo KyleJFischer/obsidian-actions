@@ -51,7 +51,7 @@ jobs:
           obsidian_actions_dir: '.jenny'
 ```
 
-**Note:** Replace `your-org` with your GitHub username or organization name. Make sure you have a `.jenny` directory in your notes repository root with your filter configurations (see [Configuration](#configuration) below).
+**Note:** Replace `your-org` with your GitHub username or organization name (e.g., `kylejfischer/Obsidian-actions@master`). Make sure you have a `.jenny` directory in your notes repository root with your filter configurations (see [Configuration](#configuration) below).
 
 ### Local Development
 
